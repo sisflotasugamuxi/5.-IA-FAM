@@ -110,9 +110,12 @@ export function PerfilView() {
 
       // Synchronize changes to local session state
       const user = getMockUser();
-      user.nombre = nombre.trim();
-      user.cargo = cargo.trim();
-      localStorage.setItem('fam_mock_user', JSON.stringify(user));
+      const updatedUser = {
+        ...user,
+        nombre: nombre.trim(),
+        cargo: cargo.trim(),
+      };
+      localStorage.setItem('fam_mock_user', JSON.stringify(updatedUser));
       window.dispatchEvent(new Event('storage'));
 
       toast.success('Perfil actualizado correctamente');

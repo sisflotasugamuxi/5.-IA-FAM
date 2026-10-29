@@ -538,7 +538,7 @@ export default function GasVsIngPage() {
         subtitle="SIGFAM — Análisis del balance financiero mensual, afectación y acumulados 2025 vs 2026" 
         action={
           <div className="flex items-center gap-2">
-            {getMockUser().rol !== 'consultor' && (
+            {getMockUser()?.rol !== 'consultor' && (
               <Button asChild variant="default" size="sm" className="h-9 px-3 gradient-brand text-white shadow-glow-brand">
                 <Link href="/ingresos">
                   <Coins className="w-4 h-4 mr-1.5" />

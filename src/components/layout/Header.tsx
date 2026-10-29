@@ -32,10 +32,10 @@ export function Header({ title = 'Dashboard', subtitle, action }: HeaderProps) {
       if (isMock) {
         const mockUser = getMockUser();
         setUser({
-          nombre: mockUser.nombre || 'Administrador SIGFAM',
-          email: mockUser.email,
-          rol: (mockUser.email?.toLowerCase() === 'sisflotasugamuxi@gmail.com') ? 'admin' : mockUser.rol,
-          cargo: mockUser.cargo || '',
+          nombre: mockUser?.nombre || 'Administrador SIGFAM',
+          email: mockUser?.email || '',
+          rol: (mockUser?.email?.toLowerCase() === 'sisflotasugamuxi@gmail.com') ? 'admin' : (mockUser?.rol || 'admin'),
+          cargo: mockUser?.cargo || '',
         } as any);
       } else {
         try {

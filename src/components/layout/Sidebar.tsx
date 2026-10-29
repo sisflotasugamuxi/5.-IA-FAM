@@ -79,8 +79,39 @@ export function Sidebar({ onNavClick }: { onNavClick?: () => void }) {
   const [particles, setParticles] = useState<any[]>([]);
 
   useEffect(() => {
-    const updateRole = () => {
-      setRole(getMockUser().rol);
+    const updateRole = async () => {
+      try {
+        const user = getMockUser();
+        if (user?.rol) {
+          setRole(user.rol);
+        }
+
+        const isMock = !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+          process.env.NEXT_PUBLIC_SUPABASE_URL.includes('your-project') ||
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.includes('your-anon-key');
+
+        if (!isMock) {
+          const { createClient } = await import('@/lib/supabase/client');
+          const supabase = createClient();
+          const { data: { user: sbUser } } = await supabase.auth.getUser();
+          if (sbUser) {
+            if (sbUser.email?.toLowerCase() === 'sisflotasugamuxi@gmail.com') {
+              setRole('admin');
+              return;
+            }
+            const { data: profile } = await supabase
+              .from('perfiles')
+              .select('rol')
+              .eq('id', sbUser.id)
+              .single();
+            if ((profile as any)?.rol) {
+              setRole((profile as any).rol);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error updating sidebar role:', err);
+      }
     };
     updateRole();
     window.addEventListener('storage', updateRole);
@@ -114,7 +145,7 @@ export function Sidebar({ onNavClick }: { onNavClick?: () => void }) {
   const allowedGroups = NAV_GROUPS.map((group) => {
     return {
       ...group,
-      items: group.items.filter((item) => !item.roles || (item.roles as readonly string[]).includes(role)),
+      items: group.items.filter((item) => !item.roles || (item.roles as readonly string[]).includes(role || 'admin')),
     };
   }).filter((group) => group.items.length > 0);
 

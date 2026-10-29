@@ -141,7 +141,7 @@ export default function IngresosPage() {
   // Check role
   useEffect(() => {
     const user = getMockUser();
-    setUserRole(user.rol || 'admin');
+    setUserRole(user?.rol || 'admin');
   }, []);
 
   const loadData = async () => {

@@ -25,6 +25,31 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             window.location.href = '/auth/login';
             return;
           }
+
+          // Sync authenticated Supabase profile to localStorage
+          try {
+            const { data: profile } = await supabase
+              .from('perfiles')
+              .select('rol, nombre, cargo')
+              .eq('id', user.id)
+              .single();
+
+            const role = (user.email?.toLowerCase() === 'sisflotasugamuxi@gmail.com')
+              ? 'admin'
+              : (((profile as any)?.rol || 'consultor'));
+
+            const cachedUser = {
+              id: user.id,
+              email: user.email || '',
+              nombre: (profile as any)?.nombre || user.email?.split('@')[0] || 'Usuario',
+              rol: role,
+              cargo: (profile as any)?.cargo || (role === 'admin' ? 'Administrador' : role === 'analista' ? 'Analista' : 'Consultor'),
+            };
+            localStorage.setItem('fam_mock_user', JSON.stringify(cachedUser));
+            window.dispatchEvent(new Event('storage'));
+          } catch (syncErr) {
+            console.warn('Error syncing profile to session state:', syncErr);
+          }
         }
         setAuthorized(true);
       } catch (err) {

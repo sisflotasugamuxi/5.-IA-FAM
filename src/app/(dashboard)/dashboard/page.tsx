@@ -64,7 +64,7 @@ export default function DashboardPage() {
   const [selectedChartActa, setSelectedChartActa] = useState('');
 
   const getExpedienteProveedor = (e: any): string => {
-    if (e.cotizaciones && e.cotizaciones.length > 0) {
+    if (Array.isArray(e.cotizaciones) && e.cotizaciones.length > 0) {
       const selectedCots = e.cotizaciones.filter((c: any) => c.seleccionada);
       const activeCots = selectedCots.length > 0 ? selectedCots : [e.cotizaciones[0]];
       if (activeCots[0] && activeCots[0].proveedor) {
@@ -198,7 +198,7 @@ export default function DashboardPage() {
     if (selectedChartTipoServicio && e.tipo_servicio !== selectedChartTipoServicio) return false;
     
     if (selectedChartConcepto) {
-      if (!e.cotizaciones || e.cotizaciones.length === 0) return false;
+      if (!Array.isArray(e.cotizaciones) || e.cotizaciones.length === 0) return false;
       const selectedCots = e.cotizaciones.filter((c: any) => c.seleccionada);
       const activeCots = selectedCots.length > 0 ? selectedCots : [e.cotizaciones[0]];
       const hasConcepto = activeCots.some((c: any) => {

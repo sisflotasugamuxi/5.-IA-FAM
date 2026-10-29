@@ -82,7 +82,7 @@ export function AuditoriaView() {
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
 
-  if (currentUser.rol !== 'admin') {
+  if (currentUser?.rol !== 'admin') {
     return (
       <Card className="border-destructive bg-destructive/5 p-6 text-center max-w-4xl">
         <CardContent className="pt-6">

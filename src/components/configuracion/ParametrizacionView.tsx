@@ -187,7 +187,7 @@ export function ParametrizacionView() {
     }
   }, [config.loading, config.pasos, config.campoConfig, config.tiposReclamacion, config.tiposServicio, config.claseVehiculo, config.tiposDocPaso1, config.conceptosCotizacion, config.opcionesDeducible, config.culpabilidades, config.causasRaiz, config.autorizadosPor, config.cargos]);
 
-  if (currentUser.rol !== 'admin') {
+  if (currentUser?.rol !== 'admin') {
     return (
       <Card className="max-w-4xl border-destructive bg-destructive/5 p-6 text-center mx-auto">
         <CardHeader>
@@ -205,7 +205,7 @@ export function ParametrizacionView() {
     );
   }
 
-  const isReadOnly = currentUser.rol !== 'admin';
+  const isReadOnly = currentUser?.rol !== 'admin';
 
   const handleSavePasos = () => {
     config.saveConfig('fam_config_pasos_form', localPasos);

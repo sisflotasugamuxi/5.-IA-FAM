@@ -15,7 +15,7 @@ export function ConfiguracionView() {
   const [catalogos, setCatalogos] = useState<string[]>([]);
   const [newCatalogo, setNewCatalogo] = useState('');
 
-  if (currentUser.rol !== 'admin') {
+  if (currentUser?.rol !== 'admin') {
     return (
       <Card className="max-w-4xl border-destructive bg-destructive/5 p-6 text-center mx-auto mt-8">
         <CardHeader>
@@ -115,7 +115,7 @@ export function ConfiguracionView() {
               {catalogos.map((cat) => (
                 <div key={cat} className="group flex items-center gap-1.5 bg-secondary border border-border rounded-full pl-3 pr-2 py-1">
                   <span className="text-xs font-semibold text-foreground">{cat}</span>
-                  {currentUser.rol === 'admin' && (
+                  {currentUser?.rol === 'admin' && (
                     <button
                       onClick={() => removeCatalogo(cat)}
                       className="w-4 h-4 rounded-full bg-transparent hover:bg-red-500/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
@@ -126,7 +126,7 @@ export function ConfiguracionView() {
                 </div>
               ))}
             </div>
-            {currentUser.rol === 'admin' && (
+            {currentUser?.rol === 'admin' && (
               <div className="flex items-center gap-2">
                 <Input
                   placeholder="Nueva causa raíz..."

@@ -401,20 +401,43 @@ function formatExpedienteUppercase(e: any) {
 }
 
 // Mock active user profile
-export function getMockUser() {
+export function getMockUser(): { id: string; email: string; nombre: string; rol: RolUsuario; cargo?: string; created_at?: string } {
+  const defaultUser = {
+    id: 'mock-user-id',
+    email: 'sisflotasugamuxi@gmail.com',
+    nombre: 'Administrador SIGFAM',
+    rol: 'admin' as RolUsuario,
+    cargo: 'Administrador de Sistema',
+    created_at: '2025-01-01T00:00:00.000Z',
+  };
+
   if (typeof window === 'undefined') {
-    return { id: 'mock-user-id', email: 'admin@flotasugamuxi.co', nombre: 'Administrador SIGFAM', rol: 'admin' as RolUsuario };
+    return defaultUser;
   }
-  const userStr = localStorage.getItem(MOCK_STORAGE_KEYS.USER);
-  if (userStr) {
-    const parsed = JSON.parse(userStr);
-    if (parsed.email?.toLowerCase() === 'sisflotasugamuxi@gmail.com') {
-      parsed.rol = 'admin';
+
+  try {
+    const userStr = localStorage.getItem(MOCK_STORAGE_KEYS.USER);
+    if (userStr) {
+      const parsed = JSON.parse(userStr);
+      if (parsed) {
+        if (parsed.email?.toLowerCase() === 'sisflotasugamuxi@gmail.com') {
+          parsed.rol = 'admin';
+        }
+        return {
+          id: parsed.id || defaultUser.id,
+          email: parsed.email || defaultUser.email,
+          nombre: parsed.nombre || defaultUser.nombre,
+          rol: (parsed.rol || defaultUser.rol) as RolUsuario,
+          cargo: parsed.cargo || defaultUser.cargo,
+          created_at: parsed.created_at || defaultUser.created_at,
+        };
+      }
     }
-    return parsed;
+  } catch (err) {
+    console.error('Error reading mock user:', err);
   }
-  
-  return null;
+
+  return defaultUser;
 }
 
 export function setMockUser(rol: RolUsuario, nombre: string = '', cargo: string = '', email: string = '') {
